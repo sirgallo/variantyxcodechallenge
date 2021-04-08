@@ -1,0 +1,56 @@
+version: "3.3"
+services:
+    api:
+        image: api_img
+        container_name: api_inst
+        build:
+            context: ./api
+        ports:
+            - '2022:2022'
+        environment: 
+            - NODE_ENV=docker
+            - NODE_OPTIONS="--max-old-space-size=4096"
+        volumes:
+            - apidata:/usr/src/app
+        links:
+            - 'db:maria'
+        networks:
+            - codechallengefront
+            - codechallengeback
+    app:
+        image: app_img
+        container_name: app_inst
+        build:
+            context: ./app
+        ports:
+            - '2023:2023'
+        environment:
+            - NODE_ENV=docker
+            - NODE_OPTIONS="--max-old-space-size=4096"
+        volumes:
+            - appdata:/usr/src/app
+        networks:
+            - codechallengefront
+    db:
+        image: mariadb
+        container_name: db_inst
+        environment:
+            - MYSQL_DATABASE=objectdb
+            - MYSQL_ROOT_PASSWORD=rootdb
+        volumes:
+            - ./db:/etc/mysql/conf.d:ro
+            - ./db:/docker-entrypoint-initdb.d:ro
+            - dbdata:/var/lib/mysql
+        ports:
+            - '2021:2021'
+        networks:
+            - codechallengeback
+networks:
+    codechallengefront:
+        driver: bridge
+    codechallengeback:
+        driver: bridge
+volumes:
+    apidata:
+    appdata:
+    dbdata:
