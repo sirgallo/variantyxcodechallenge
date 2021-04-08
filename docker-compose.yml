@@ -1,8 +1,8 @@
 version: "3.3"
 services:
     api:
-        image: api_img
-        container_name: api_inst
+        image: variantyx_api_img
+        container_name: variantyx_api_inst
         build:
             context: ./api
         ports:
@@ -11,15 +11,15 @@ services:
             - NODE_ENV=docker
             - NODE_OPTIONS="--max-old-space-size=4096"
         volumes:
-            - apidata:/usr/src/app
+            - variantyxapidata:/usr/src/app
         links:
             - 'db:maria'
         networks:
-            - codechallengefront
-            - codechallengeback
+            - variantyxfront
+            - variantyxback
     app:
-        image: app_img
-        container_name: app_inst
+        image: variantyx_app_img
+        container_name: variantyx_app_inst
         build:
             context: ./app
         ports:
@@ -28,29 +28,29 @@ services:
             - NODE_ENV=docker
             - NODE_OPTIONS="--max-old-space-size=4096"
         volumes:
-            - appdata:/usr/src/app
+            - variantyxappdata:/usr/src/app
         networks:
-            - codechallengefront
+            - variantyxfront
     db:
         image: mariadb
-        container_name: db_inst
+        container_name: variantyx_db_inst
         environment:
             - MYSQL_DATABASE=objectdb
             - MYSQL_ROOT_PASSWORD=rootdb
         volumes:
             - ./db:/etc/mysql/conf.d:ro
             - ./db:/docker-entrypoint-initdb.d:ro
-            - dbdata:/var/lib/mysql
+            - variantyxdbdata:/var/lib/mysql
         ports:
             - '2021:2021'
         networks:
-            - codechallengeback
+            - variantyxback
 networks:
-    codechallengefront:
+    variantyxfront:
         driver: bridge
-    codechallengeback:
+    variantyxback:
         driver: bridge
 volumes:
-    apidata:
-    appdata:
-    dbdata:
+    variantyxapidata:
+    variantyxappdata:
+    variantyxdbdata:
