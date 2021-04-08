@@ -12,8 +12,9 @@ The database is a MariaDB database, with the schema included to create the table
 All three services are currently most cohesively run on Docker using docker-compose. The frontend and database are running over separated networks, with the api communicating over both networks. This separates the resources so that the frontend cannot directly communicate with the database. The docker-compose platform is great for development and even small scale production. However, to scale up, all three services could be separated and then run on Docker Swarm. This would allow for the application to then eventually scale if necessary.\
 
 The application requires submodules to load, so once the repository is cloned (**git clone https://github.com/sirgallo/variantyxcodechallenge**), it is required that the following commands are run in the main directory of the project (**/variantyxcodechallenge**), in order:<br />
-- **git submodule init**<br />
-- **git submodule update**<br />
+- **git submodule init**
+- **git submodule update**
+
 This pulls the latest code into the correct directories of the project (the api and app directory). These directories would otherwise remain empty.
 
 To run on docker-compose, simply make sure docker is running on your machine and then run the following in your console:<br />
